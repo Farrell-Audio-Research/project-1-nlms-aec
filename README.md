@@ -1,3 +1,5 @@
+*This project is part of our [Machine Listening & Audio ML Portfolio](https://github.com/Farrell-Audio-Research/audio-ml-portfolio).*
+
 # NLMS Filter for AEC: A Baseline Analysis
 
 **Authors:** Conner O. Farrell & Mark Farrell (Fall 2025)
