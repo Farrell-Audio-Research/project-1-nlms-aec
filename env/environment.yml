@@ -1,0 +1,6 @@
+name: metaaf
+channels:
+  - defaults
+dependencies:
+  - python=3.9
+prefix: /nethome/cfarrell40/miniconda3/envs/metaaf
