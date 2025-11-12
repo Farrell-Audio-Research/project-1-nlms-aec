@@ -28,7 +28,7 @@ The core of our baseline is in the `patches/aec_infer.py` file, which implements
 
 ```bash
 
-proj1-metaaf/
+project-1-nlms-aec/
 ├── env/
 │   ├── environment.yml         \# Minimal conda spec
 │   └── requirements.lock.txt   \# Exact pip freeze
