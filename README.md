@@ -30,18 +30,22 @@ The core of our baseline is in the `patches/aec_infer.py` file, which implements
 
 project-1-nlms-aec/
 ├── env/
-│   ├── environment.yml         \# Minimal conda spec
-│   └── requirements.lock.txt   \# Exact pip freeze
+│   ├── environment.yml                  \# Minimal conda spec
+│   └── requirements.lock.txt            \# Exact pip freeze
+├── graphs/
+│   ├── ERLE_DoubleTalkGateRatio.png     \# Graph of Gate Ratio Tuning
+│   ├── ERLE_Leak.png                    \# Graph of Leakage Tuning
+│   └── ERLE_DTD_Power_Window_Size.png   \# Graph of Power Window Tuning
 ├── patches/
-│   ├── aec_infer.py            \# Our NLMS baseline (replaces the MetaAF one)
-│   └── learners.py             \# Model loader + small dataset shim
+│   ├── aec_infer.py                     \# Our NLMS baseline (replaces the MetaAF one)
+│   └── learners.py                      \# Model loader + small dataset shim
 ├── results/
-│   ├── my_speech.wav           \# Optional sample input
-│   ├── ref.wav                 \# Optional sample input
-│   └── mic_aec_out.wav         \# Produced by run_aec.py
+│   ├── my_speech.wav                    \# Optional sample input
+│   ├── ref.wav                          \# Optional sample input
+│   └── mic_aec_out.wav                  \# Produced by run_aec.py
 ├── scripts/
-│   └── apply_patches.sh        \# Copies patches into installed metaaf package
-├── run_aec.py                  \# Simple driver script
+│   └── apply_patches.sh                 \# Copies patches into installed metaaf package
+├── run_aec.py                           \# Simple driver script
 └── README.md
 
 ````
@@ -116,6 +120,8 @@ The `gate_ratio` for the double-talk detector was the most impactful parameter.
   * **Too High (e.g., 1900.0):** The detector is insensitive. It fails to freeze during double-talk, causing the filter to adapt to the near-end user's voice and diverge.
   * **Optimal (e.g., 200.0):** Provides the best balance, allowing the filter to adapt aggressively during echo-only periods while correctly freezing during double-talk.
 
+![Gate Ratio Tuning](graphs/ERLE_DoubleTalkGateRatio.png)
+
 ### 2\. The `leak` Trade-off (Stability vs. Tracking Speed)
 
 The `leak` parameter was crucial for long-term filter stability.
@@ -124,12 +130,16 @@ The `leak` parameter was crucial for long-term filter stability.
   * **Too High (e.g., 0.5):** The filter "forgets" what it learns at every step. This high bias prevents it from fully converging and canceling the echo (ERLE: \~4.1 dB).
   * **Optimal (e.g., 0.1):** Provides just enough regularization to ensure stability without sacrificing the filter's speed and ability to track the echo.
 
+![Leakage Tuning](graphs/ERLE_Leak.png)
+
 ### 3\. The `pow_win` Trade-off (Detector Responsiveness vs. Stability)
 
 The `pow_win` parameter controls the smoothing of the power estimates used by the DTD.
 
   * **Too Low (e.g., 256):** The power estimate is fast but very noisy. This causes the DTD to "flutter" (rapidly freeze/unfreeze), harming performance.
   * **Optimal (e.g., \~1000-3000):** A larger window provides a smooth, stable power estimate. This makes the DTD's decisions more reliable, leading to the highest and most stable ERLE.
+
+![Power Window Tuning](graphs/ERLE_DTD_Power_Window_Size.png)
 
 ### Final Optimal Parameters
 
@@ -162,7 +172,5 @@ The clear next step is to use this tuned baseline to formally benchmark the full
   * If you rebuild your env, re-run `./scripts/apply_patches.sh`.
   * If your input WAVs are not 16 kHz mono, resample first (or add resampling to `run_aec.py`).
 
-```
-```
-
+---
 **Authors:** Conner O. Farrell & Mark Farrell (Fall 2025)
