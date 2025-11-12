@@ -2,7 +2,7 @@
 
 # NLMS Filter for AEC: A Baseline Analysis
 
-**Authors:** Conner O. Farrell & Mark Farrell (Fall 2025)
+**Authors:** Conner O. Farrell & Mark Farrell (Fall 2025) 
 
 ---
 
